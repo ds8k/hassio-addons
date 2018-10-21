@@ -114,7 +114,7 @@ class GoogleTextAssistant(object):
                 config.screen_out_config.screen_mode = PLAYING
             req = embedded_assistant_pb2.AssistRequest(config=config)
             # This can be used to output the assistant request
-            # assistant_helpers.log_assist_request_without_audio(req)
+            assistant_helpers.log_assist_request_without_audio(req)
             yield req
 
         text_response = None
@@ -122,14 +122,14 @@ class GoogleTextAssistant(object):
         for resp in self.assistant.Assist(iter_assist_requests(),
                                           self.deadline):
             # This can be used to output the assistant response
-            # assistant_helpers.log_assist_response_without_audio(resp)
+            assistant_helpers.log_assist_response_without_audio(resp)
             if resp.screen_out.data:
                 html_response = resp.screen_out.data
             if resp.dialog_state_out.conversation_state:
                 conversation_state = resp.dialog_state_out.conversation_state
                 self.conversation_state = conversation_state
             if resp.dialog_state_out.supplemental_display_text:
-                text_response = resp.dialog_state_out.supplemental_display_text()
+                text_response = resp.dialog_state_out.supplemental_display_text
         return text_response, html_response
 
 if __name__ == '__main__':
